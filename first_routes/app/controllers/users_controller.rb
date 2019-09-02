@@ -1,9 +1,16 @@
 class UsersController < ApplicationController 
   def index
-    users = User.all  
-    render json: users
-
-    # render plain: "I'm in the index action!"
+    if params[:username]
+      user = User.find_by(username: params[:username])
+      if user
+        render json: user 
+      else 
+        render json: user.errors.full_messages, status: 422
+      end 
+    else 
+      users = User.all  
+      render json: users
+    end 
   end
 
   def create
